@@ -1,0 +1,6 @@
+{
+	"name": "test-sensor",
+	"version": 1,
+	"revision": "0.0.1",
+	"typefile-1": "atmega328p-firmware"
+}

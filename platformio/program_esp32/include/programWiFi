@@ -1,0 +1,33 @@
+/*! @file programWiFi.cpp
+ * @version 1.0.0
+*/
+
+#ifndef PROGRAMWIFI_HPP
+#define PROGRAMWIFI_HPP
+
+#include <Arduino.h>
+#include <WiFi.h>
+#include "TypeSerial"
+#include "variable.h"
+
+class ProgramWiFi : protected VariableMillis {
+public:
+    void modeSTA();
+    void modeAP();
+
+public:
+    void setup(const String SSID, const String PASSWORD_SSID, const String NAME_AP, const String PASSWORD_AP);
+    void initWiFi(bool state);
+
+public:
+    String ssid_sta, password_sta;
+    String LOCALIP;
+    String Name_AP, Password_AP;
+
+private:
+    void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info);
+    void WiFiStationDisconnect(WiFiEvent_t event, WiFiEventInfo_t info);
+    void WiFiGotIP(WiFiEvent_t evet, WiFiEventInfo_t info);
+};
+
+#endif

@@ -1,0 +1,7 @@
+{
+	"name": "test-sensor",
+	"version": 1,
+	"revision": "0.0.1",
+	"typefile-1": "esp32-firmware",
+	"typefile-2": "esp32-spiffs"
+}

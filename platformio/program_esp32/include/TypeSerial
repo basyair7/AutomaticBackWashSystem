@@ -1,0 +1,14 @@
+#ifndef TYPESERIAL_HPP
+#define TYPESERIAL_HPP
+
+#include <Arduino.h>
+extern "C" {
+    #define TSbegin Serial.begin
+    #define TSavailable Serial.available
+    #define TSprint Serial.print
+    #define TSprintf Serial.printf
+    #define TSprintln Serial.println
+    #define TSwrite Serial.write
+}
+
+#endif
