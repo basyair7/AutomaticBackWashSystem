@@ -11,7 +11,11 @@ void WebServer::postData(AsyncWebServerRequest *req, uint8_t *data, size_t len, 
 
     if (error) {
         TSprintf("deserializeJson() failed: %s\n", error.c_str());
-        req->send(400, "application/json", "{\"status\":\"error\"}");
+        String response = "{\"status\":\""; 
+        response += error.c_str();
+        response += "\"}";
+
+        req->send_P(400, "application/json", response.c_str());
         return;
     }
 
