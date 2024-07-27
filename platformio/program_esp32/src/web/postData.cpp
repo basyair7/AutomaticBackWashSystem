@@ -6,12 +6,13 @@ void WebServer::postData(AsyncWebServerRequest *req, uint8_t *data, size_t len, 
     TSprintf("\nReceived data: %s\n", body.c_str());
 
     // Memproses data JSON
+    String response = "";
     StaticJsonDocument<200> jsonDoc;
     DeserializationError error = deserializeJson(jsonDoc, body);
 
     if (error) {
         TSprintf("deserializeJson() failed: %s\n", error.c_str());
-        String response = "{\"status\":\""; 
+        response = "{\"status\":\""; 
         response += error.c_str();
         response += "\"}";
 
@@ -28,8 +29,9 @@ void WebServer::postData(AsyncWebServerRequest *req, uint8_t *data, size_t len, 
             jsonDoc[relayKeys[i]] = relayState;
         }
     }
-
-    String response;
+    
+    jsonDoc["status"] = "success";
+    
     serializeJson(jsonDoc, response);
 
     req->send_P(200, "application/json", response.c_str());
