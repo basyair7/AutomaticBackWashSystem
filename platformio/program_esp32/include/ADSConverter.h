@@ -10,7 +10,7 @@
 class ADSInit {
 public:
 	Adafruit_ADS1115 ads; // use this for the 16-bit version
-	void init();
+	bool init();
 };
 
 class SEN_0189 : public ADSInit {

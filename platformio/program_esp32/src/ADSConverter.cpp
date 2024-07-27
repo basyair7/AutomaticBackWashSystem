@@ -1,10 +1,12 @@
 #include "ADSConverter.h"
 
-void ADSInit::init() {
+bool ADSInit::init() {
     if (!ads.begin()) {
         Serial.println("Failed to initialize ADS.\n");
-        while(1);
+        return false;
     }
+
+    return true;
 }
 
 /* 1. Pin Sensor in ADC 16bit board

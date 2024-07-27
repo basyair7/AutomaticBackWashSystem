@@ -5,8 +5,8 @@ param (
 )
 
 # Use the provided port to run the pio command
-if ($null -eq $port) {
-    Invoke-Expression "pio device monitor"
-} else {
+if ($port) {
     Invoke-Expression "pio device monitor --port $port"
+} else {
+    Invoke-Expression "pio device monitor"
 }

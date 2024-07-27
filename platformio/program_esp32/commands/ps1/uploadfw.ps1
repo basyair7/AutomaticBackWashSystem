@@ -8,8 +8,8 @@ param (
 . .\commands\ps1\board.ps1
 
 # Use the BOARDTYPE variable to run the pio command with or without the specified port
-if ($null -eq $port) {
-    Invoke-Expression "pio run -e $BOARDTYPE -t upload"
-} else {
+if ($port) {
     Invoke-Expression "pio run -e $BOARDTYPE -t upload --upload-port $port"
+} else {
+    Invoke-Expression "pio run -e $BOARDTYPE -t upload"
 }
