@@ -20,10 +20,15 @@ void WebServer::postData(AsyncWebServerRequest *req, uint8_t *data, size_t len, 
         if (jsonDoc.containsKey(relayKeys[i])) {
             bool relayState = jsonDoc[relayKeys[i]];
             updateRelayState(i, relayState);
+
+            jsonDoc[relayKeys[i]] = relayState;
         }
     }
 
-    req->send_P(200, "application/json", "{\"status\":\"success\"}");
+    String response;
+    serializeJson(jsonDoc, response);
+
+    req->send_P(200, "application/json", response.c_str());
 }
 
 void WebServer::updateRelayState(int relay, bool state) {
