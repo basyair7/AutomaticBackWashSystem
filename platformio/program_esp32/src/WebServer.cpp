@@ -31,9 +31,11 @@ void WebServer::begin() {
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *req) {
         req->send_P(200, "text/plain", "Hello ESP32!");
     });
-    server.on("/post-data", HTTP_POST, [](AsyncWebServerRequest *request){}, NULL,
+    server.on("/status", HTTP_GET, bind(&WebServer::sendRelayStatus, this, placeholders::_1));
+    server.on("/data", HTTP_GET, bind(&WebServer::sendData, this, placeholders::_1));
+    server.on("/post-relay", HTTP_POST, [](AsyncWebServerRequest *request){}, NULL,
         bind(
-            &WebServer::postData, this, 
+            &WebServer::postRelay, this, 
             placeholders::_1,
             placeholders::_2, 
             placeholders::_3, 

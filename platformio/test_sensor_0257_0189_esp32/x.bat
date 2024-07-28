@@ -1,16 +1,17 @@
 @echo off
 
 IF "%1" == "" (
+    cls
     echo ShortCut Command PlatformIO
-    echo running example : "exc <command> <port>"
-    echo exc monitor or exc monitor com0 
+    echo running example : "%0 <command> <port>"
+    echo %0 monitor or %0 monitor com0 
     echo.
     echo list commands :
-    for %%f in (bat\*.bat) do (
+    for %%f in (commands\bat\*.bat) do (
         ::set "filelist=!filelist! %%~nxf"
         echo - %%~nxf
     )
 
 ) ELSE (
-    CALL bat\\%1 %2
+    CALL commands\\bat\\%1 %2
 )

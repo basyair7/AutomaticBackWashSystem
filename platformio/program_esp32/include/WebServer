@@ -6,6 +6,7 @@
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
 #include <ArduinoJson.h>
+#include "variable.h"
 #include "TypeSerial"
 
 class WebServer {
@@ -15,15 +16,16 @@ public:
 
 private:
     void handleNotFound(AsyncWebServerRequest *req);
-    void postData(AsyncWebServerRequest *req, uint8_t *data, size_t len, size_t index, size_t total);
-    void sendData(AsyncWebServerRequest *req);
     void recovery(AsyncWebServerRequest *req);
     void updateRelayState(int relay, bool state);
 
 private:
+    void postRelay(AsyncWebServerRequest *req, uint8_t *data, size_t len, size_t index, size_t total);
+    void sendRelayStatus(AsyncWebServerRequest *req);
+    void sendData(AsyncWebServerRequest *req);
+
+private:
     AsyncWebServer server;
-    const int relayPins[4] = {12, 14, 25, 26};
-    const char* relayKeys[4] = {"relay1", "relay2", "relay3", "relay4"};
 };
 
 #endif

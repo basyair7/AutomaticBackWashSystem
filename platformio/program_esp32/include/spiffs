@@ -1,0 +1,53 @@
+#ifndef SPIFFS_H
+#define SPIFFS_H
+
+#include <Arduino.h>
+#include <SPIFFS.h>
+#include <ArduinoJson.h>
+#include <vector>
+#include "variable.h"
+#include "TypeSerial"
+
+class SPIFFSProgram {
+public:
+    void setupFS();
+    void reinitializeConfig();
+    void reinitializeState();
+    void reinitializeVarRelay();
+
+public:
+    void changeVarRelay(String varName, String value);
+    void changePinRelay(String varName, uint8_t value);
+    void changeStateRelay(String varName, bool status);
+    void changeConfigWifi(String NEWSSID, String NEWPASSWORD);
+    void changeConfigAP(String NEWAPNAME, String NEWPASSWORD);
+    void changeConfigState(String stateConfig, bool value);
+    void parseVarRelay(const String& varName, int* id, int* pin, String* name, bool* status);
+
+private:
+    String readconfig(String path);
+    bool removeFile(String path);
+    void writeconfig(String path, String valJson);
+    void listFiles();
+    void updateConfig(const String& cfile, std::function<void (DynamicJsonDocument&)> updateFunc);
+    void updateState(const String& cfile, std::function<void (StaticJsonDocument<200>&)> updateFunc);
+    void updateRelay(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
+    void initializeOrUpdateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
+    void initializeOrUpdateState(const String& cfile, std::function<void (StaticJsonDocument<200>&)> updateFunc);
+    void initializeOrUpdateVarRelay(const String& cfile, std::function<void(StaticJsonDocument<500>&)> updateFunc);
+    void initializeConfig();
+    void initializeState();
+    void initializeVarRelay();
+
+private:
+    File file;
+    const String configFile = "/CONFIG/config.json";
+    const String configRelay = "/CONFIG/relaystate.json";
+    const String configFileState = "/CONFIG/~config.json";
+};
+
+extern String SSID_Client, PASSWORD_Client;
+extern String APNAME_Server, APPASSWORD_Server;
+extern bool AP_MODE_STATE, AUTO_CHANGE_MODE;
+
+#endif

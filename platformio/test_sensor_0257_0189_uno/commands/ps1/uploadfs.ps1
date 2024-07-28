@@ -1,4 +1,4 @@
-# eraseboard.ps1
+# uploadfs.ps1
 
 param (
     [string]$port
@@ -9,7 +9,7 @@ param (
 
 # Use the BOARDTYPE variable to run the pio command with or without the specified port
 if ($port) {
-    Invoke-Expression "pio run -e $BOARDTYPE -t erase --upload-port $port"
+    Invoke-Expression "pio run -e $BOARDTYPE -t uploadfs --upload-port $port"
 } else {
-    Invoke-Expression "pio run -e $BOARDTYPE -t erase"
+    Invoke-Expression "pio run -e $BOARDTYPE -t uploadfs"
 }

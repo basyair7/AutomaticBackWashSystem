@@ -1,0 +1,18 @@
+#ifndef RELAYCONTROLLER_HPP
+#define RELAYCONTROLLER_HPP
+
+#include <Arduino.h>
+#include <vector>
+#include "main.h"
+#include "variable.h"
+
+#define RELAYON     LOW
+#define RELAYOFF    HIGH
+
+class RelayController : protected VariableMillis {
+public:
+    void begin();
+    void write(const String relay, const bool state, unsigned long _delay);
+};
+
+#endif
