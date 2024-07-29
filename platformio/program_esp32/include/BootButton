@@ -26,7 +26,7 @@ public:
                 wifiState = !wifiState;
                 spiffs->changeConfigState("WIFI_AP", wifiState);
                 TSprintln(F("Change Mode WiFi : "));
-                TSprintln(wifiState ? "MODE_AP" : "MODE_AP_STA");
+                TSprintln(wifiState ? "MODE_AP_STA" : "MODE_AP");
                 delay(2000);
                 ESP.restart();
             }

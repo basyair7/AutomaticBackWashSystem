@@ -165,7 +165,7 @@ public:
         TSbegin(115200);
         TSprintln(F("\nInitializing..."));
         spiffs->setupFS();
-        bootBtn->WiFiMode();
+        bootBtn->begin();
         relaycontrol->begin();
         ThisRTOS::testProgram(true);
 
