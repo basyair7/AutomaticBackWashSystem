@@ -28,6 +28,10 @@ private:
     void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info);
     void WiFiStationDisconnect(WiFiEvent_t event, WiFiEventInfo_t info);
     void WiFiGotIP(WiFiEvent_t evet, WiFiEventInfo_t info);
+    
+    IPAddress local_ip;
+    IPAddress gateway;
+    IPAddress subnet;
 };
 
 #endif

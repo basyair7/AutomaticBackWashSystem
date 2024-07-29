@@ -59,7 +59,13 @@ void ProgramWiFi::modeSTA() {
 void ProgramWiFi::modeAP() {
     // setup WiFi mode AP
     WiFi.mode(WIFI_AP);
-    WiFi.softAP(Name_AP, Password_AP);
+    if (!WiFi.softAPConfig(local_ip, gateway, subnet)) {
+        TSprintln(F("SoftAP Config Failed"));
+    }
+    
+    if (!WiFi.softAP(Name_AP.c_str(), Password_AP.c_str())) {
+        TSprintln(F("SoftAP Setup Failed"));
+    }
 
     // get IP Address
     LOCALIP = WiFi.softAPIP().toString().c_str();
@@ -73,6 +79,10 @@ void ProgramWiFi::setup(const String SSID, const String PASSWORD_SSID, const Str
     password_sta = PASSWORD_SSID;
     Name_AP = NAME_AP;
     Password_AP = PASSWORD_AP;
+
+    gateway  = IPAddress(10, 168, 43, 1);
+    local_ip = IPAddress(10, 168, 43, 1);
+    subnet   = IPAddress(255, 255, 255, 0);
 }
 
 /* program initialize wifi

@@ -19,7 +19,7 @@ SEN_0189* sensor3 = new SEN_0189;
 SPIFFSProgram* spiffs = new SPIFFSProgram;
 RelayController* relaycontrol = new RelayController;
 ProgramWiFi* programWiFi = new ProgramWiFi;
-WebServer* webServer = new WebServer(80);
+WebServer* webServer = new WebServer(8080);
 
 TaskHandle_t taskSensor = NULL;
 

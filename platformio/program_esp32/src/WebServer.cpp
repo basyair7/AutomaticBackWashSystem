@@ -32,6 +32,9 @@ void WebServer::updateOTAloop() {
 }
 
 void WebServer::begin() {
+    TSprint(F("Port: "));
+    TSprintln(_port);
+    
     if (!MDNS.begin("esp32-delay")) {
         TSprintln(F("Error starting mDNS"));
         return;
