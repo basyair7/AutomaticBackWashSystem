@@ -36,7 +36,7 @@ class Move:
             print(f"Firmware file not found: {firmware_src}")
 
         if new_firmware_name and os.path.exists(spiffs_src):
-            spiffs_dest = os.path.exists(spiffs_src)
+            spiffs_dest = os.path.join(dest_dir, new_spiffs_name)
             self.__move_file__(spiffs_src, spiffs_dest)
         elif new_spiffs_name:
             print(f"SPIFFS file not found: {spiffs_src}")

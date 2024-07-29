@@ -3,21 +3,41 @@
 
 #include <Arduino.h>
 #include <AsyncTCP.h>
+#include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
+#include <FS.h>
+#include <SPIFFS.h>
 #include <ArduinoJson.h>
+#include "main.h"
 #include "variable.h"
+#include "info"
 #include "TypeSerial"
 
-class WebServer {
+class WebServer : protected Info {
 public:
     WebServer(int _port) : server(_port) {}
     void begin();
+    void updateOTAloop();
 
 private:
     void handleNotFound(AsyncWebServerRequest *req);
     void recovery(AsyncWebServerRequest *req);
+    void Reset_System(AsyncWebServerRequest *req);
+    void Reboot(AsyncWebServerRequest *req);
     void updateRelayState(int relay, bool state);
+
+private:
+    void APConfig(AsyncWebServerRequest *req);
+    void APConfig_1(AsyncWebServerRequest *req);
+    void APConfig_2(AsyncWebServerRequest *req);
+    void SaveAPConfig(AsyncWebServerRequest *req);
+
+private:
+    void WiFiConfig(AsyncWebServerRequest *req);
+    void WiFiConfig_1(AsyncWebServerRequest *req);
+    void WiFiConfig_2(AsyncWebServerRequest *req);
+    void SaveWiFiConfig(AsyncWebServerRequest *req);
 
 private:
     void postRelay(AsyncWebServerRequest *req, uint8_t *data, size_t len, size_t index, size_t total);
@@ -25,7 +45,10 @@ private:
     void sendData(AsyncWebServerRequest *req);
 
 private:
+    const String webpath = "/WEB/html/";
     AsyncWebServer server;
+    String LOCALIP;
+    File file;
 };
 
 #endif

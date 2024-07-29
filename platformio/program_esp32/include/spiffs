@@ -46,8 +46,10 @@ private:
     const String configFileState = "/CONFIG/~config.json";
 };
 
-extern String SSID_Client, PASSWORD_Client;
-extern String APNAME_Server, APPASSWORD_Server;
-extern bool AP_MODE_STATE, AUTO_CHANGE_MODE;
+extern bool AP_MODE_STATE, AUTO_CHANGE_MODE, REMOTE_SERVER_STATE;
+extern String SSID_Client;
+extern String PASSWORD_Client;
+extern String APNAME_Server;
+extern String APPASSWORD_Server;
 
 #endif

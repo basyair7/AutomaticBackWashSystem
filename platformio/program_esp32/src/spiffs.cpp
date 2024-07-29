@@ -19,9 +19,11 @@ std::vector<String> queryDirFS(const String path) {
 
     File file = dir.openNextFile();
     while (file) {
-        String fileInfo = file.name();
-        fileInfo += " - ";
+        String fileInfo = "- ";
+        fileInfo += file.name();
+        fileInfo += " (";
         fileInfo += file.size();
+        fileInfo += ")";
         files.push_back(fileInfo);
         file = dir.openNextFile();
     }
@@ -37,16 +39,8 @@ void TSprintlnList(const std::vector<String>& files) {
 
 void SPIFFSProgram::listFiles() {
     TSprintln(F("Listing file stored in SPIFFS : "));
-    TSprintln(F("List Directory / "));
-    TSprintlnList(queryDirFS("/"));
-    TSprintln();
-
-    TSprintln(F("List Directory /CONFIG :"));
+    TSprintln(F("List Directory /CONFIG "));
     TSprintlnList(queryDirFS("/CONFIG"));
-    TSprintln();
-
-    TSprintln(F("List Directory /WEB: "));
-    TSprintlnList(queryDirFS("/WEB"));
     TSprintln();
 
     TSprintln(F("List Directory /WEB/html "));
@@ -66,7 +60,7 @@ void SPIFFSProgram::initializeOrUpdateConfig(const String& cfile, std::function<
 {
     StaticJsonDocument<500> doc;
     String readConfig = this->readconfig(cfile), newConfig = "";
-    if (readConfig = "null") {
+    if (readConfig = "null" || !SPIFFS.exists(cfile)) {
         // Initialize default values if file does not exists
         doc["SSID"] = SSID_DEFAULT;
         doc["PASSWORD"] = PASSWORD_DEFAULT;
@@ -93,7 +87,7 @@ void SPIFFSProgram::initializeOrUpdateVarRelay(const String& cfile, std::functio
 {
     StaticJsonDocument<500> doc;
     String readConfig = this->readconfig(cfile), newConfig = "";
-    if (readConfig == "null") {
+    if (readConfig == "null" || !SPIFFS.exists(cfile)) {
         // Initialize default values if file does not exists
         int id = 1;
         for (int i = 0; i < (int)(sizeof(PIN_IO_RELAY)/sizeof(PIN_IO_RELAY[0])); i++) {
@@ -125,7 +119,7 @@ void SPIFFSProgram::initializeOrUpdateState(const String& cfile, std::function<v
 {
     StaticJsonDocument<200> doc;
     String readConfig = this->readconfig(cfile), newConfig = "";
-    if (readConfig == "null") {
+    if (readConfig == "null" || !SPIFFS.exists(cfile)) {
         // Initialize default value if file does not found
         doc["WIFI_AP"] = true;
         doc["AUTO_CHANGE"] = false;

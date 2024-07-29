@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="config-wifi">
+    <meta name="author" content="basyair7">
+    <link rel="stylesheet" href="/css/wificonfig.css">
+    <link rel="stylesheet" href="../css/wificonfig.css">
+    <title>WiFi Configuration - SOR %VERSIONPROJECT%</title>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <caption><h4>Data has been saved</h4></caption>
+                <caption><p>Please disable the Recovery menu mode and perform a Hard Restart before returning to client mode</p></caption>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>New WiFi SSID</td> <td>:</td> <td>%NEWSSID%</td>
+                </tr>
+                <tr>
+                    <td>New WiFi Password</td> <td>:</td>
+                    <td>%NEWPASSWORD%</td>
+                </tr>
+                <tr>
+                    <td></td> <td></td>
+                    <td><a href="http://%LOCALIP%/recovery" class="button">Return to Menu</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+        <footer>
+            <p><b>Powered by : <a href="https://github.com/basyair7" target="_blank">basyair7</a></b></p>
+        </footer>
+    </div>
+</body>
+</html>

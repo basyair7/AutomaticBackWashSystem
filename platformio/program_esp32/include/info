@@ -1,0 +1,21 @@
+#ifndef INFO_HPP
+#define INFO_HPP
+
+#include <Arduino.h>
+
+#define VERSION     "1.0"
+#define HWVERSION   "1.0.0"
+#define SWVERSION   "1.0.3"
+#define BUILDDATE   "7/17/2024"
+#define REGION      "INDONESIA"
+
+class Info {
+    protected:
+        const String version_project = VERSION;
+        const String hwversion       = HWVERSION;
+        const String swversion       = SWVERSION;
+        const String builddate       = BUILDDATE;
+        const String region          = REGION;
+};
+
+#endif

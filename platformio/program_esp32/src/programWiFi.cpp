@@ -4,8 +4,10 @@
 
 #include <programWiFi>
 
+bool WifiState;
+
 void ProgramWiFi::WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info) {
-    TSprintln(F("Connection to AP Successfully"));
+    TSprintln(F("\nConnection to AP Successfully"));
 }
 
 void ProgramWiFi::WiFiStationDisconnect(WiFiEvent_t event, WiFiEventInfo_t info) {
@@ -16,15 +18,15 @@ void ProgramWiFi::WiFiStationDisconnect(WiFiEvent_t event, WiFiEventInfo_t info)
         TSprint(F("WiFi lost connection, Reason "));
         TSprintln(info.wifi_sta_disconnected.reason);
         TSprintln(F("Trying to reconnect"));
-        WiFi.begin(this->ssid_sta, this->password_sta);
+        WiFi.begin(ssid_sta, password_sta);
     }
 }
 
 void ProgramWiFi::WiFiGotIP(WiFiEvent_t evet, WiFiEventInfo_t info) {
-    this->LOCALIP = WiFi.localIP().toString().c_str();
+    LOCALIP = WiFi.localIP().toString().c_str();
     TSprintln(F("WiFi Connected"));
     TSprint(F("IP Address: "));
-    TSprintln(this->LOCALIP);
+    TSprintln(LOCALIP);
 }
 
 // run program mode STA
@@ -40,7 +42,7 @@ void ProgramWiFi::modeSTA() {
     WiFi.onEvent([this](WiFiEvent_t event, WiFiEventInfo_t info) { WiFiStationDisconnect(event, info); }, ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
 
     // Attempt to connect to WiFi
-    WiFi.begin(this->ssid_sta, this->password_sta);
+    WiFi.begin(ssid_sta, password_sta);
     TSprintln(F("Connecting to WiFi"));
     while (WiFi.status() != WL_CONNECTED) {
         TSprint(F("."));
@@ -57,20 +59,20 @@ void ProgramWiFi::modeSTA() {
 void ProgramWiFi::modeAP() {
     // setup WiFi mode AP
     WiFi.mode(WIFI_AP);
-    WiFi.softAP(this->Name_AP, this->Password_AP);
+    WiFi.softAP(Name_AP, Password_AP);
 
     // get IP Address
-    this->LOCALIP = WiFi.softAPIP().toString().c_str();
+    LOCALIP = WiFi.softAPIP().toString().c_str();
     TSprint(F("IP Address: "));
-    TSprintln(this->LOCALIP);
+    TSprintln(LOCALIP);
 }
 
 void ProgramWiFi::setup(const String SSID, const String PASSWORD_SSID, const String NAME_AP, const String PASSWORD_AP)
 {
-    this->ssid_sta = SSID;
-    this->password_sta = PASSWORD_SSID;
-    this->Name_AP = NAME_AP;
-    this->Password_AP = PASSWORD_AP;
+    ssid_sta = SSID;
+    password_sta = PASSWORD_SSID;
+    Name_AP = NAME_AP;
+    Password_AP = PASSWORD_AP;
 }
 
 /* program initialize wifi
@@ -78,6 +80,7 @@ void ProgramWiFi::setup(const String SSID, const String PASSWORD_SSID, const Str
  * Mode AP = false
 */
 void ProgramWiFi::initWiFi(bool state) {
+    WifiState = state;
     if (state) {
         modeSTA();
     }

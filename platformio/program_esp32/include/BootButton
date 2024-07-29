@@ -1,0 +1,46 @@
+#ifndef bootbutton_hpp
+#define bootbutton_hpp
+
+#include <Arduino.h>
+#include <main.h>
+#include <pushbutton.h>
+#include "spiffs"
+#include "variable.h"
+
+class BootButton {
+public:
+    BootButton(uint8_t pin, uint8_t mode) : bootBtn(pin, mode) { }
+    
+    void begin() {
+        bootBtn.init();
+        wifiState = AP_MODE_STATE;
+    }
+    
+    void WiFiMode() {
+        currentButtonState = bootBtn.digitalReadPushButton();
+        if (currentButtonState != lastButtonState)
+            buttonChange = true;
+
+        if (buttonChange) {
+            if (currentButtonState == LOW) {
+                wifiState = !wifiState;
+                spiffs->changeConfigState("WIFI_AP", wifiState);
+                TSprintln(F("Change Mode WiFi : "));
+                TSprintln(wifiState ? "MODE_AP" : "MODE_AP_STA");
+                delay(2000);
+                ESP.restart();
+            }
+            buttonChange = false;
+        }
+        lastButtonState = currentButtonState;
+    }
+    
+private:
+    PushButtonDigital bootBtn;
+    bool currentButtonState = false;
+    bool lastButtonState    = false;
+    bool buttonChange       = false;
+    bool wifiState          = false;
+};
+
+#endif

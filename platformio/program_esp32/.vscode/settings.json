@@ -60,6 +60,8 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "spiffs": "cpp",
-        "relaycontroller": "cpp"
+        "relaycontroller": "cpp",
+        "bootbutton": "c",
+        "variable.h": "c"
     }
 }

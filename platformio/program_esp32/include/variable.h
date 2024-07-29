@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 
+// define pinout component
+#define BOOTBUTTON 0
+#define LEDDEFAULT LED_BUILTIN
+
 // Pin sensor in ads converter 16 bit
 #define sensor_0257_1   0
 #define sensor_0257_2   1
@@ -37,5 +41,7 @@ class VariableMillis {
 protected:
     unsigned long LastMillis = 0;
 };
+
+extern bool WifiState;
 
 #endif

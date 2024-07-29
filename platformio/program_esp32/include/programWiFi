@@ -19,7 +19,7 @@ public:
     void setup(const String SSID, const String PASSWORD_SSID, const String NAME_AP, const String PASSWORD_AP);
     void initWiFi(bool state);
 
-public:
+private:
     String ssid_sta, password_sta;
     String LOCALIP;
     String Name_AP, Password_AP;

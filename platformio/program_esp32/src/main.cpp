@@ -1,6 +1,7 @@
 #include <main.h>
 #include <ArduinoJson.h>
 #include <variable.h>
+#include <BootButton>
 #include <spiffs>
 #include <relaycontroller>
 #include <programWiFi>
@@ -10,6 +11,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
+BootButton* bootBtn = new BootButton(BOOTBUTTON, INPUT);
 ADSInit* ads = new ADSInit;
 SEN_0257* sensor1 = new SEN_0257;
 SEN_0257* sensor2 = new SEN_0257;
@@ -28,6 +30,7 @@ public:
     void runSensor(void *pvParameter) {
         (void) pvParameter;
         if (!ads->init()) {
+            TSprintln(F("Task runServer: not running"));
             vTaskDelete(taskSensor);
         }
 
@@ -63,16 +66,19 @@ public:
             data3["volt-value"] = volt_sensor3;
             TSprintf("\nSensor 3 (SEN 0189): \nADC: %d (Volt: %.f)", adc_sensor3, volt_sensor3);
 
-            vTaskDelay(pdMS_TO_TICKS(100));
+            dataSensor = "";
+            serializeJson(doc, dataSensor);
+
+            vTaskDelay(pdMS_TO_TICKS(400));
         }
     }
 
     void runWebServer(void *pvParameter) {
         (void) pvParameter;
-        pinMode(LED_BUILTIN, OUTPUT);
+        pinMode(LEDDEFAULT, OUTPUT);
 
         programWiFi->setup(test_ssid, test_password, test_ap_name, test_ap_password);
-        programWiFi->initWiFi(true);
+        programWiFi->initWiFi(AP_MODE_STATE);
         webServer->begin();
 
         // Set ADC width to 12 bits (default)
@@ -83,6 +89,7 @@ public:
         randomSeed(seedValue);
 
         while (true) {
+            bootBtn->WiFiMode();
             StaticJsonDocument<500> data;
             JsonObject data1, data2, data3;
             int16_t adc_sensor1, adc_sensor2, adc_sensor3;
@@ -114,10 +121,12 @@ public:
             
             serializeJson(data, dataSensor);
             
-            digitalWrite(LED_BUILTIN, HIGH);
+            digitalWrite(LEDDEFAULT, HIGH);
             vTaskDelay(pdMS_TO_TICKS(200));
-            digitalWrite(LED_BUILTIN, LOW);
+            digitalWrite(LEDDEFAULT, LOW);
             vTaskDelay(pdMS_TO_TICKS(200));
+            
+            webServer->updateOTAloop();
         }
     }
 
@@ -130,10 +139,16 @@ protected:
     static void testProgram(bool x) {
         if (x) {
             TSprintln(F("Test program enable..."));
-            test_ssid = "@Wifi.com 23";
-            test_password = "Hostpot_ahul7";
-            test_ap_name = APNAME_DEFAULT;
+            test_ssid        = "@Wifi.com 23";
+            test_password    = "Hostpot_ahul7";
+            test_ap_name     = APNAME_DEFAULT;
             test_ap_password = APPASSWORD_DEFAULT;
+        }
+        else {
+            test_ssid        = SSID_Client;
+            test_password    = PASSWORD_Client;
+            test_ap_name     = APNAME_Server;
+            test_ap_password = APPASSWORD_Server;
         }
     }
 };
@@ -150,6 +165,7 @@ public:
         TSbegin(115200);
         TSprintln(F("\nInitializing..."));
         spiffs->setupFS();
+        bootBtn->WiFiMode();
         relaycontrol->begin();
         ThisRTOS::testProgram(true);
 
