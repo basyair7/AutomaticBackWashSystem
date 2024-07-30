@@ -3,6 +3,7 @@
 */
 
 #include <programWiFi>
+#include <BootButton>
 
 bool WifiState;
 
@@ -31,6 +32,8 @@ void ProgramWiFi::WiFiGotIP(WiFiEvent_t evet, WiFiEventInfo_t info) {
 
 // run program mode STA
 void ProgramWiFi::modeSTA() {
+    BootButton bootBtn(BOOTBUTTON, INPUT);
+    bootBtn.begin();
     // setup WiFi mode STA
     WiFi.mode(WIFI_STA);
     // Disabled sleep mode
@@ -45,6 +48,7 @@ void ProgramWiFi::modeSTA() {
     WiFi.begin(ssid_sta, password_sta);
     TSprintln(F("Connecting to WiFi"));
     while (WiFi.status() != WL_CONNECTED) {
+        bootBtn.WiFiMode();
         TSprint(F("."));
         delay(500);
     }

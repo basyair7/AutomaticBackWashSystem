@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <vector>
-#include "main.h"
+#include "spiffs"
 #include "variable.h"
 
 #define RELAYON     LOW
@@ -13,6 +13,9 @@ class RelayController : protected VariableMillis {
 public:
     void begin();
     void write(const String relay, const bool state, unsigned long _delay);
+
+private:
+    SPIFFSProgram* fs_config = new SPIFFSProgram;
 };
 
 #endif

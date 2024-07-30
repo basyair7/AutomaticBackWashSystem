@@ -7,7 +7,7 @@ bool RelayState;
 void RelayController::begin() {
     TSprintln(F("\nInitialize Relay Pins: "));
     for (const auto& i : relayKeys) {
-        spiffs->parseVarRelay(i, &IDRelay, &PINIORelay, &LableRelay, &RelayState);
+        fs_config->parseVarRelay(i, &IDRelay, &PINIORelay, &LableRelay, &RelayState);
         if (PINIORelay == -1) {
             TSprintf("Failed to initialize relay %s\n", LableRelay.c_str());
             continue;
@@ -22,8 +22,8 @@ void RelayController::begin() {
 void RelayController::write(const String relay, const bool state, unsigned long _delay) {
     if ((unsigned long) (millis() - LastMillis) >= (long unsigned int) _delay) {
         LastMillis = millis();
-        spiffs->parseVarRelay(relay, &IDRelay, &PINIORelay, &LableRelay, nullptr);
-        spiffs->changeStateRelay(relay, state);
+        fs_config->parseVarRelay(relay, &IDRelay, &PINIORelay, &LableRelay, nullptr);
+        fs_config->changeStateRelay(relay, state);
         digitalWrite(PINIORelay, state ? RELAYON : RELAYOFF);
         TSprintln(F("\nRelay Action : "));
         TSprint(F("Lable\t\t: "));

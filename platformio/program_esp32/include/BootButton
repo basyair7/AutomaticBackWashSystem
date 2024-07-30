@@ -2,7 +2,6 @@
 #define bootbutton_hpp
 
 #include <Arduino.h>
-#include <main.h>
 #include <pushbutton.h>
 #include "spiffs"
 #include "variable.h"
@@ -24,8 +23,8 @@ public:
         if (buttonChange) {
             if (currentButtonState == LOW) {
                 wifiState = !wifiState;
-                spiffs->changeConfigState("WIFI_AP", wifiState);
-                TSprintln(F("Change Mode WiFi : "));
+                fs_config->changeConfigState("WIFI_AP", wifiState);
+                TSprintln(F("\nChange Mode WiFi : "));
                 TSprintln(wifiState ? "MODE_AP_STA" : "MODE_AP");
                 delay(2000);
                 ESP.restart();
@@ -37,6 +36,7 @@ public:
     
 private:
     PushButtonDigital bootBtn;
+    SPIFFSProgram* fs_config = new SPIFFSProgram;
     bool currentButtonState = false;
     bool lastButtonState    = false;
     bool buttonChange       = false;
