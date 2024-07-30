@@ -36,7 +36,7 @@ public:
 
         while (true) {
             // put your main code here, to run repeatedly:
-            int16_t adc_sensor1, adc_sensor2, adc_sensor3;
+            int adc_sensor1, adc_sensor2, adc_sensor3;
             float volt_sensor1, volt_sensor2, volt_sensor3;
 
             StaticJsonDocument<500> doc;
@@ -48,7 +48,6 @@ public:
             data1["name"]       = "Water Pressure 1";
             data1["adc-value"]  = adc_sensor1;
             data1["volt-value"] = volt_sensor1;
-            TSprintf("\nSensor 1 (SEN 0257): \nADC: %d (Volt: %.f)", adc_sensor1, volt_sensor1);
             
             // sensor 2 (SEN 0257)
             sensor2->run(sensor_0257_2, 1000, &adc_sensor2, &volt_sensor2);
@@ -56,7 +55,6 @@ public:
             data2["name"]       = "Water Pressure 2";
             data2["adc-value"]  = adc_sensor2;
             data2["volt-value"] = volt_sensor2;
-            TSprintf("\nSensor 2 (SEN 0257): \nADC: %d (Volt: %.f)\n", adc_sensor2, volt_sensor2);
 
             // sensor 3 (SEN 0189)
             sensor3->run(sensor_0189, 1000, &adc_sensor3, &volt_sensor3);
@@ -64,12 +62,16 @@ public:
             data3["name"]       = "Turbidity Sensor";
             data3["adc-value"]  = adc_sensor3;
             data3["volt-value"] = volt_sensor3;
-            TSprintf("\nSensor 3 (SEN 0189): \nADC: %d (Volt: %.f)", adc_sensor3, volt_sensor3);
+
+            // print in terminal
+            TSprintf("\nSensor 1 (SEN 0257): \nADC: %d (Volt: %.f)", adc_sensor1, volt_sensor1);
+            TSprintf("\nSensor 2 (SEN 0257): \nADC: %d (Volt: %.f)", adc_sensor2, volt_sensor2);
+            TSprintf("\nSensor 3 (SEN 0189): \nADC: %d (Volt: %.f)\n", adc_sensor3, volt_sensor3);
 
             dataSensor = "";
             serializeJson(doc, dataSensor);
 
-            vTaskDelay(pdMS_TO_TICKS(400));
+            vTaskDelay(pdMS_TO_TICKS(500));
         }
     }
 

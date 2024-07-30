@@ -15,7 +15,7 @@ public:
 
 class SEN_0189 : public ADSInit {
 public:
-	void run(uint8_t pin, long delayms, int16_t* adc_ads, float* volt_ads);
+	void run(uint8_t pin, long delayms, int* adc_ads, float* volt_ads);
 	
 private:
 	unsigned long LastDelay = 0;
@@ -23,7 +23,7 @@ private:
 
 class SEN_0257 : public ADSInit {
 public:
-	void run(uint8_t pin, long delayms, int16_t* adc_ads, float* volt_ads);
+	void run(uint8_t pin, long delayms, int* adc_ads, float* volt_ads);
 
 private:
 	unsigned long LastDelay = 0;
