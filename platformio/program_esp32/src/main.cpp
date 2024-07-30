@@ -87,14 +87,14 @@ public:
         analogReadResolution(12);
 
         // Read analog value from the pin and use it as a seed
-        uint16_t seedValue = analogRead(34);
+        int seedValue = analogRead(34);
         randomSeed(seedValue);
 
         while (true) {
             bootBtn->WiFiMode();
             StaticJsonDocument<500> data;
             JsonObject data1, data2, data3;
-            int16_t adc_sensor1, adc_sensor2, adc_sensor3;
+            int adc_sensor1, adc_sensor2, adc_sensor3;
             float volt_sensor1, volt_sensor2, volt_sensor3;
 
             adc_sensor1 = random(0, 65536);
