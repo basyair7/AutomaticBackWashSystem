@@ -12,7 +12,7 @@ public:
     
     void begin() {
         bootBtn.init();
-        wifiState = AP_MODE_STATE;
+        _state = WIFI_MODE_STATE;
     }
     
     void WiFiMode() {
@@ -22,10 +22,10 @@ public:
 
         if (buttonChange) {
             if (currentButtonState == LOW) {
-                wifiState = !wifiState;
-                fs_config->changeConfigState("WIFI_AP", wifiState);
+                _state = !_state;
+                fs_config->changeConfigState("WIFI_MODE", _state);
                 TSprintln(F("\nChange Mode WiFi : "));
-                TSprintln(wifiState ? "MODE_AP_STA" : "MODE_AP");
+                TSprintln(_state ? "MODE_AP_STA" : "MODE_AP");
                 delay(2000);
                 ESP.restart();
             }
@@ -40,7 +40,7 @@ private:
     bool currentButtonState = false;
     bool lastButtonState    = false;
     bool buttonChange       = false;
-    bool wifiState          = false;
+    bool _state             = false;
 };
 
 #endif

@@ -16,7 +16,7 @@ void WebServer::WiFiConfig_1(AsyncWebServerRequest *req) {
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%", "%VERSIONPROJECT%",
@@ -55,7 +55,7 @@ void WebServer::WiFiConfig_2(AsyncWebServerRequest *req) {
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%", "%VERSIONPROJECT%", 
@@ -95,12 +95,12 @@ void WebServer::SaveWiFiConfig(AsyncWebServerRequest *req) {
     if (req->hasArg("newssid") && req->hasArg("newpassword")) {
         NEWSSIDCLIENT     = req->arg("newssid");
         NEWPASSWORDCLIENT = req->arg("newpassword");
-        spiffs->changeConfigWifi(NEWSSIDCLIENT, NEWPASSWORDCLIENT);
+        spiffs.changeConfigWifi(NEWSSIDCLIENT, NEWPASSWORDCLIENT);
     }
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%",

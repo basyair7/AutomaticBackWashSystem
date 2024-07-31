@@ -1,8 +1,8 @@
 #include <spiffs>
 
-void SPIFFSProgram::updateConfig(const String& cfile, std::function<void (DynamicJsonDocument&)> updateFunc)
+void SPIFFSProgram::updateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc)
 {
-    DynamicJsonDocument doc(1024);
+    StaticJsonDocument<500> doc;
     String readConfig = this->readconfig(cfile), newConfig = "";
 
     if (readConfig == "null") {
@@ -26,6 +26,7 @@ void SPIFFSProgram::updateConfig(const String& cfile, std::function<void (Dynami
 
     serializeJson(doc, newConfig);
     this->writeconfig(cfile, newConfig);
+    TSprintln(this->readconfig(cfile));
 }
 
 void SPIFFSProgram::updateState(const String& cfile, std::function<void (StaticJsonDocument<200>&)> updateFunc)
@@ -35,7 +36,7 @@ void SPIFFSProgram::updateState(const String& cfile, std::function<void (StaticJ
 
     if (readConfig == "null") {
         // Initialze default values if file does not exists
-        doc["WIFI_AP"] = false;
+        doc["WIFI_MODE"] = false;
         doc["AUTO_CHANGE"] = false;
         doc["REMOTE_SERVER"] = false;
     }
@@ -53,25 +54,28 @@ void SPIFFSProgram::updateState(const String& cfile, std::function<void (StaticJ
 
     serializeJson(doc, newConfig);
     this->writeconfig(cfile, newConfig);
+    TSprintln(this->readconfig(cfile));
 }
 
 /* Change Config State
  * stateConfig :
- * -> WIFI_AP
+ * -> WIFI_MODE
  * -> AUTO_CHANGE
  * value :
  * -> true (enable)
  * -> false (disable)
 */
 void SPIFFSProgram::changeConfigState(String stateConfig, bool value) {
-    updateState(configFileState, [&](StaticJsonDocument<200>& doc) {
+    TSprintf("\nUpdate :\nSTATECONFIG: %s\nVALUE: %s\n", stateConfig.c_str(), value ? "true" : "false");
+    this->updateState(configFileState, [&](StaticJsonDocument<200>& doc) {
         doc[stateConfig] = value;
     });
 }
 
 void SPIFFSProgram::changeConfigAP(String NEWAPNAME, String NEWAPPASSWORD)
 {
-    updateConfig(configFile, [&](DynamicJsonDocument& doc) {
+    TSprintf("\nUpdate :\nNEWAPNAME: %s\nNEWAPPASSWORD: %s\n", NEWAPNAME.c_str(), NEWAPPASSWORD.c_str());
+    this->updateConfig(configFile, [&](StaticJsonDocument<500>& doc) {
         doc["APNAME"] = NEWAPNAME;
         doc["APPASSWORD"] = NEWAPPASSWORD;
     });
@@ -79,7 +83,8 @@ void SPIFFSProgram::changeConfigAP(String NEWAPNAME, String NEWAPPASSWORD)
 
 void SPIFFSProgram::changeConfigWifi(String NEWSSID, String NEWPASSWORD)
 {
-    updateConfig(configFile, [&](DynamicJsonDocument& doc) {
+    TSprintf("\nUpdate :\nNEWSSID: %s\nNEWPASSWORD: %s\n", NEWSSID.c_str(), NEWPASSWORD.c_str());
+    this->updateConfig(configFile, [&](StaticJsonDocument<500>& doc) {
         doc["SSID"] = NEWSSID;
         doc["PASSWORD"] = NEWPASSWORD;
     });

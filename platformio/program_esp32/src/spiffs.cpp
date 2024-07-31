@@ -5,11 +5,11 @@ String PASSWORD_Client = PASSWORD_DEFAULT;
 String APNAME_Server = APNAME_DEFAULT;
 String APPASSWORD_Server = APPASSWORD_DEFAULT;
 
-bool AP_MODE_STATE          = true;
+bool WIFI_MODE_STATE        = true;
 bool AUTO_CHANGE_MODE       = false;
 bool REMOTE_SERVER_STATE    = false;
 
-std::vector<String> queryDirFS(const String path) {
+std::vector<String> SPIFFSProgram::queryDirFS(const String path) {
     std::vector<String> files;
     File dir = SPIFFS.open(path);
     if (!dir || !dir.isDirectory()) {
@@ -31,28 +31,22 @@ std::vector<String> queryDirFS(const String path) {
     return files;
 }
 
-void TSprintlnList(const std::vector<String>& files) {
-    for (const auto& file : files) {
-        TSprintln(file);
-    }
-}
-
 void SPIFFSProgram::listFiles() {
     TSprintln(F("Listing file stored in SPIFFS : "));
     TSprintln(F("List Directory /CONFIG "));
-    TSprintlnList(queryDirFS("/CONFIG"));
+    this->TSprintlnList(this->queryDirFS("/CONFIG"));
     TSprintln();
 
     TSprintln(F("List Directory /WEB/html "));
-    TSprintlnList(queryDirFS("/WEB/html"));
+    this->TSprintlnList(this->queryDirFS("/WEB/html"));
     TSprintln();
 
     TSprintln(F("List Directory /WEB/css "));
-    TSprintlnList(queryDirFS("/WEB/css"));
+    this->TSprintlnList(this->queryDirFS("/WEB/css"));
     TSprintln();
     
     TSprintln(F("List Directory /WEB/js "));
-    TSprintlnList(queryDirFS("/WEB/js"));
+    this->TSprintlnList(this->queryDirFS("/WEB/js"));
     TSprintln();
 }
 
@@ -60,7 +54,7 @@ void SPIFFSProgram::initializeOrUpdateConfig(const String& cfile, std::function<
 {
     StaticJsonDocument<500> doc;
     String readConfig = this->readconfig(cfile), newConfig = "";
-    if (readConfig = "null" || !SPIFFS.exists(cfile)) {
+    if (readConfig == "null" || !SPIFFS.exists(cfile)) {
         // Initialize default values if file does not exists
         doc["SSID"] = SSID_DEFAULT;
         doc["PASSWORD"] = PASSWORD_DEFAULT;
@@ -121,7 +115,7 @@ void SPIFFSProgram::initializeOrUpdateState(const String& cfile, std::function<v
     String readConfig = this->readconfig(cfile), newConfig = "";
     if (readConfig == "null" || !SPIFFS.exists(cfile)) {
         // Initialize default value if file does not found
-        doc["WIFI_AP"] = true;
+        doc["WIFI_MODE"] = true;
         doc["AUTO_CHANGE"] = false;
         doc["REMOTE_SERVER"] = false;
     }
@@ -166,18 +160,18 @@ void SPIFFSProgram::reinitializeConfig() {
 
 void SPIFFSProgram::initializeState() {
     initializeOrUpdateState(configFileState, [&](StaticJsonDocument<200>& data) {
-        AP_MODE_STATE = data["WIFI_AP"];
+        WIFI_MODE_STATE  = data["WIFI_MODE"];
         AUTO_CHANGE_MODE = data["AUTO_CHANGE"];
     });
 }
 
 void SPIFFSProgram::reinitializeState() {
     initializeOrUpdateState(configFileState, [&](StaticJsonDocument<200>& data) {
-        data["WIFI_AP"]         = true;
+        data["WIFI_MODE"]       = true;
         data["AUTO_CHANGE"]     = false;
         data["REMOTE_SERVER"]   = false;
 
-        AP_MODE_STATE       = true;
+        WIFI_MODE_STATE     = true;
         AUTO_CHANGE_MODE    = false;
         REMOTE_SERVER_STATE = false;
     });
@@ -220,7 +214,7 @@ void SPIFFSProgram::setupFS() {
             this->initializeState();
             this->initializeVarRelay();
             this->listFiles();
-            TSprintln("\nConfigurate WiFi Client : ");
+            TSprintln(F("\nConfigurate WiFi Client : "));
             TSprint(F("SSID: ")); TSprintln(SSID_Client);
             TSprint(F("PASSWORD: ")); TSprintln(PASSWORD_Client);
             TSprintln(F("\nAccess Poin Server: "));

@@ -6,10 +6,8 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
-#include <FS.h>
-#include <SPIFFS.h>
 #include <ArduinoJson.h>
-#include "main.h"
+#include "spiffs"
 #include "variable.h"
 #include "info"
 #include "TypeSerial"
@@ -52,6 +50,7 @@ private:
     String LOCALIP;
     File file;
     int _port;
+    SPIFFSProgram spiffs;
 };
 
 #endif

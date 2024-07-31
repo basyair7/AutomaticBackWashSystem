@@ -16,7 +16,7 @@ void WebServer::APConfig_1(AsyncWebServerRequest *req) {
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%", "%VERSIONPROJECT%", "%APNAME%",
@@ -55,7 +55,7 @@ void WebServer::APConfig_2(AsyncWebServerRequest *req) {
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%", "%VERSIONPROJECT%", "%APNAME%",
@@ -97,12 +97,12 @@ void WebServer::SaveAPConfig(AsyncWebServerRequest *req) {
     if (req->hasArg("newap") && req->hasArg("newpassword")) {
         NEWAPNAME     = req->arg("newap");
         NEWAPPASSWORD = req->arg("newpassword");
-        spiffs->changeConfigAP(NEWAPNAME, NEWAPPASSWORD);
+        spiffs.changeConfigAP(NEWAPNAME, NEWAPPASSWORD);
     }
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%", "%NEWAPNAME%",

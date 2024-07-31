@@ -63,9 +63,9 @@ void WebServer::begin() {
     // run recovery page
     server.on("/recovery", HTTP_GET, bind(&WebServer::recovery, this, placeholders::_1));
     // run server system
-    server.on("/reset-server", HTTP_GET, bind(&WebServer::Reset_System, this, placeholders::_1));
+    server.on("/reset-system", HTTP_GET, bind(&WebServer::Reset_System, this, placeholders::_1));
     // reboot web server
-    server.on("rst-webserver", HTTP_GET, bind(&WebServer::Reboot, this, placeholders::_1));
+    server.on("/rst-webserver", HTTP_GET, bind(&WebServer::Reboot, this, placeholders::_1));
 
     // run config ap
     server.on("/config-ap", HTTP_GET, bind(&WebServer::APConfig, this, placeholders::_1));
@@ -73,7 +73,7 @@ void WebServer::begin() {
 
     // run config Wifi
     server.on("/config-wifi", HTTP_GET, bind(&WebServer::WiFiConfig, this, placeholders::_1));
-    server.on("save-wifi-config", HTTP_POST, bind(&WebServer::SaveWiFiConfig, this, placeholders::_1));
+    server.on("/save-wifi-config", HTTP_POST, bind(&WebServer::SaveWiFiConfig, this, placeholders::_1));
     
     // get css file and javascripts file
     // CSS

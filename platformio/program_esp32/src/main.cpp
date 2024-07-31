@@ -1,17 +1,19 @@
 #include <main.h>
-#include <ArduinoJson.h>
-#include <variable.h>
-#include <BootButton>
-#include <spiffs>
-#include <relaycontroller>
-#include <programWiFi>
 #include <ADSConverter.h>
+#include <ArduinoJson.h>
+#include <spiffs>
+#include <programWiFi>
+#include <relaycontroller>
 #include <WebServer>
+#include <LedBoard>
+#include <BootButton>
+#include <variable.h>
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
 BootButton* bootBtn = new BootButton(BOOTBUTTON, INPUT);
+LEDBoard* ledBoard = new LEDBoard;
 ADSInit* ads = new ADSInit;
 SEN_0257* sensor1 = new SEN_0257;
 SEN_0257* sensor2 = new SEN_0257;
@@ -70,28 +72,43 @@ public:
 
             dataSensor = "";
             serializeJson(doc, dataSensor);
-
+            
             vTaskDelay(pdMS_TO_TICKS(500));
         }
     }
 
     void runWebServer(void *pvParameter) {
         (void) pvParameter;
-        pinMode(LEDDEFAULT, OUTPUT);
 
-        programWiFi->setup(test_ssid, test_password, test_ap_name, test_ap_password);
-        programWiFi->initWiFi(AP_MODE_STATE);
+        programWiFi->setup(SSID_Client, PASSWORD_Client, APNAME_Server, APPASSWORD_Server);
+        programWiFi->initWiFi(WIFI_MODE_STATE);
         webServer->begin();
-
-        // Set ADC width to 12 bits (default)
-        analogReadResolution(12);
-
-        // Read analog value from the pin and use it as a seed
-        int seedValue = analogRead(34);
-        randomSeed(seedValue);
 
         while (true) {
             bootBtn->WiFiMode();
+            ledBoard->WiFiMode(WIFI_MODE_STATE, 1000, 250);
+            this->testSendData();
+            webServer->updateOTAloop();
+        }
+    }
+
+protected:
+    bool _testProgram;
+    void setupTestSendData(bool test = false) {
+        if (test) {
+            // Set ADC width to 12 bits (default)
+            analogReadResolution(12);
+
+            // Read analog value from the pin and use it as a seed
+            int seedValue = analogRead(34);
+            randomSeed(seedValue);
+            TSprintln(F("Test send data: ready"));
+            _testProgram = test;
+        }
+    }
+
+    void testSendData() {
+        if (_testProgram) {    
             StaticJsonDocument<500> data;
             JsonObject data1, data2, data3;
             int adc_sensor1, adc_sensor2, adc_sensor3;
@@ -122,37 +139,9 @@ public:
             dataSensor = "";
             
             serializeJson(data, dataSensor);
-            
-            digitalWrite(LEDDEFAULT, HIGH);
-            vTaskDelay(pdMS_TO_TICKS(200));
-            digitalWrite(LEDDEFAULT, LOW);
-            vTaskDelay(pdMS_TO_TICKS(200));
-            
-            webServer->updateOTAloop();
         }
     }
 
-protected:
-    static String test_ssid;
-    static String test_password;
-    static String test_ap_name;
-    static String test_ap_password;
-    
-    static void testProgram(bool x) {
-        if (x) {
-            TSprintln(F("Test program enable..."));
-            test_ssid        = "@Wifi.com 23";
-            test_password    = "Hostpot_ahul7";
-            test_ap_name     = APNAME_DEFAULT;
-            test_ap_password = APPASSWORD_DEFAULT;
-        }
-        else {
-            test_ssid        = SSID_Client;
-            test_password    = PASSWORD_Client;
-            test_ap_name     = APNAME_Server;
-            test_ap_password = APPASSWORD_Server;
-        }
-    }
 };
 
 class ThisRTOS : public ProgramMain {
@@ -168,10 +157,11 @@ public:
         TSprintln(F("\nInitializing..."));
         spiffs->setupFS();
         bootBtn->begin();
+        ledBoard->begin(LED_BUILTIN);
         relaycontrol->begin();
-        ThisRTOS::testProgram(true);
 
         ThisRTOS* p1 = new ThisRTOS;
+        p1->setupTestSendData(true);
         xTaskCreateUniversal([](void *param) {
             static_cast<ThisRTOS*>(param)->runSensor(param);
         }, "SensorMain", 8192, p1, 1, &taskSensor, 0);
@@ -186,11 +176,6 @@ public:
         // TODO (not yet implemented)
     }
 };
-
-String ProgramMain::test_ssid;
-String ProgramMain::test_password;
-String ProgramMain::test_ap_name;
-String ProgramMain::test_ap_password;
 
 ThisRTOS _main;
 void setup() { _main.setup(); }

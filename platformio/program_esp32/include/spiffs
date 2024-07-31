@@ -28,8 +28,7 @@ private:
     String readconfig(String path);
     bool removeFile(String path);
     void writeconfig(String path, String valJson);
-    void listFiles();
-    void updateConfig(const String& cfile, std::function<void (DynamicJsonDocument&)> updateFunc);
+    void updateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
     void updateState(const String& cfile, std::function<void (StaticJsonDocument<200>&)> updateFunc);
     void updateRelay(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
     void initializeOrUpdateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
@@ -40,13 +39,22 @@ private:
     void initializeVarRelay();
 
 private:
+    std::vector<String> queryDirFS(const String path);
+    void TSprintlnList(const std::vector<String>& files) {
+        for (const auto& file : files) {
+            TSprintln(file);
+        }
+    }
+    void listFiles();
+
+private:
     File file;
     const String configFile = "/CONFIG/config.json";
     const String configRelay = "/CONFIG/relaystate.json";
     const String configFileState = "/CONFIG/~config.json";
 };
 
-extern bool AP_MODE_STATE, AUTO_CHANGE_MODE, REMOTE_SERVER_STATE;
+extern bool WIFI_MODE_STATE, AUTO_CHANGE_MODE, REMOTE_SERVER_STATE;
 extern String SSID_Client;
 extern String PASSWORD_Client;
 extern String APNAME_Server;

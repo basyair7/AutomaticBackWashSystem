@@ -1,4 +1,5 @@
 import os, json, shutil
+from SCons.Script import DefaultEnvironment
 
 class Move:
     def __init__(self) -> None:
@@ -41,7 +42,7 @@ class Move:
         elif new_spiffs_name:
             print(f"SPIFFS file not found: {spiffs_src}")
 
-def main():
+def main(source, target, env):
     # Open and read the configuration file
     with open('build.config.json', 'r') as f:
         config = json.load(f)
@@ -59,4 +60,6 @@ def main():
     move_file = Move();
     move_file.process_file(out_file_firmware, out_file_spiffs)
 
-main()
+env = DefaultEnvironment()
+env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", main)
+env.AddPostAction("$BUILD_DIR/spiffs.bin", main)

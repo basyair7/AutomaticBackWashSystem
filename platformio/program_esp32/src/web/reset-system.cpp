@@ -16,7 +16,7 @@ void WebServer::Reset_System(AsyncWebServerRequest *req) {
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%VERSIONPROJECT%", "%LOCALIP%"
@@ -35,7 +35,7 @@ void WebServer::Reset_System(AsyncWebServerRequest *req) {
     delete[] htmlBuffer;
 
     // reinitialize config
-    spiffs->reinitializeConfig();
-    spiffs->reinitializeState();
-    // spiffs->reinitializeVarRelay();
+    spiffs.reinitializeConfig();
+    spiffs.reinitializeState();
+    // spiffs.reinitializeVarRelay();
 }

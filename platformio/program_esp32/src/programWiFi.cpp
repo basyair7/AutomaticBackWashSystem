@@ -93,9 +93,9 @@ void ProgramWiFi::setup(const String SSID, const String PASSWORD_SSID, const Str
  * Mode STA = true
  * Mode AP = false
 */
-void ProgramWiFi::initWiFi(bool state) {
-    WifiState = state;
-    if (state) {
+void ProgramWiFi::initWiFi(bool WiFiMode) {
+    WifiState = WiFiMode;
+    if (WiFiMode) {
         modeSTA();
     }
     else {

@@ -1,0 +1,46 @@
+#ifndef ledboard_hpp
+#define ledboard_hpp
+
+#include <Arduino.h>
+#include <variable.h>
+
+#define LEDON  true
+#define LEDOFF false
+
+class LEDBoard : protected VariableMillis {
+public:
+    void begin(uint8_t pin = LEDDEFAULT) {
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, LEDOFF);
+        _pin = pin;
+    }
+
+    void WiFiMode(bool state, unsigned long _delay1, unsigned long _delay2) {
+        if (state) this->_run(_delay1);
+        else       this->_run(_delay2);
+    }
+
+private:
+    bool LEDSTATE = LEDOFF;
+    int _pin;
+    void _run(unsigned long _delay) {
+        unsigned long currentMillis = millis();
+        if (!LEDSTATE) {
+            if ((unsigned long)(currentMillis - LastMillis) >= (long unsigned int)_delay) {
+                LastMillis = currentMillis;
+                LEDSTATE = LEDON;
+            }
+        }
+        else {
+            if ((unsigned long)(currentMillis - LastMillis) >= (long unsigned int)_delay) {
+                LastMillis = currentMillis;
+                LEDSTATE = LEDOFF;
+            }
+        }
+
+        digitalWrite(_pin, LEDSTATE);
+    }
+
+};
+
+#endif

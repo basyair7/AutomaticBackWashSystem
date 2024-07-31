@@ -16,7 +16,7 @@ void WebServer::recovery(AsyncWebServerRequest *req) {
 
     // get ip address
     IPAddress clientIP = req->client()->localIP();
-    LOCALIP = clientIP.toString();
+    LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
         "%LOCALIP%", "%VERSIONPROJECT%", "%HWVERSION%", "%SWVERSION%",

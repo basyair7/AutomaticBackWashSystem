@@ -61,7 +61,8 @@
         "cinttypes": "cpp",
         "spiffs": "cpp",
         "relaycontroller": "cpp",
-        "bootbutton": "c",
+        "bootbutton": "cpp",
+        "LedBoard": "cpp",
         "variable.h": "c"
     }
 }
