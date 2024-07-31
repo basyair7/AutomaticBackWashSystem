@@ -84,15 +84,19 @@ public:
         programWiFi->initWiFi(WIFI_MODE_STATE);
         webServer->begin();
 
+        this->setupTestSendData(true);
+
         while (true) {
             bootBtn->WiFiMode();
             ledBoard->WiFiMode(WIFI_MODE_STATE, 1000, 250);
-            this->testSendData();
             webServer->updateOTAloop();
+            this->testSendData();
+
+            vTaskDelay(pdMS_TO_TICKS(100));
         }
     }
 
-protected:
+private:
     bool _testProgram;
     void setupTestSendData(bool test = false) {
         if (test) {
@@ -161,7 +165,6 @@ public:
         relaycontrol->begin();
 
         ThisRTOS* p1 = new ThisRTOS;
-        p1->setupTestSendData(true);
         xTaskCreateUniversal([](void *param) {
             static_cast<ThisRTOS*>(param)->runSensor(param);
         }, "SensorMain", 8192, p1, 1, &taskSensor, 0);
