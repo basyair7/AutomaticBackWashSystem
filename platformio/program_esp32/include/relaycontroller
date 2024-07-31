@@ -11,7 +11,7 @@
 
 class RelayController : protected VariableMillis {
 public:
-    void begin();
+    void begin(unsigned long _delay);
     void write(const String relay, const bool state, unsigned long _delay);
 
 private:

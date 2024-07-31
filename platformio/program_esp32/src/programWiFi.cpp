@@ -12,9 +12,9 @@ void ProgramWiFi::WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info) 
 }
 
 void ProgramWiFi::WiFiStationDisconnect(WiFiEvent_t event, WiFiEventInfo_t info) {
-    if (((unsigned long) (millis() - LastMillis) >= (long unsigned int) 15000) && WiFi.status() != WL_CONNECTED) 
+    if (((unsigned long) (millis() - LastMillis_1) >= (long unsigned int) 15000) && WiFi.status() != WL_CONNECTED) 
     {
-        LastMillis = millis();
+        LastMillis_1 = millis();
         TSprintln(F("Disconnected from WiFi Access Point"));
         TSprint(F("WiFi lost connection, Reason "));
         TSprintln(info.wifi_sta_disconnected.reason);

@@ -39,7 +39,8 @@ inline String relayKeys[4] = {
 
 class VariableMillis {
 protected:
-    unsigned long LastMillis = 0;
+    unsigned long LastMillis_1 = 0;
+    unsigned long LastMillis_2 = 0;
 };
 
 extern bool WifiState;

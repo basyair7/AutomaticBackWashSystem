@@ -162,7 +162,7 @@ public:
         spiffs->setupFS();
         bootBtn->begin();
         ledBoard->begin(LED_BUILTIN);
-        relaycontrol->begin();
+        relaycontrol->begin(1000);
 
         ThisRTOS* p1 = new ThisRTOS;
         xTaskCreateUniversal([](void *param) {
