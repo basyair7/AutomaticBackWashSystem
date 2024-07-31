@@ -126,17 +126,17 @@ private:
             volt_sensor3 = random(0, 65536);
 
             data1 = data.createNestedObject("data1");
-            data1["name"]       = "SEN0257-1";
+            data1["name"]       = "Water Pressure 1";
             data1["adc-value"]  = adc_sensor1;
             data1["volt-value"] = volt_sensor1;
 
             data2 = data.createNestedObject("data2");
-            data2["name"]       = "SEN0257-2";
+            data2["name"]       = "Water Pressure 2";
             data2["adc-value"]  = adc_sensor2;
             data2["volt-value"] = volt_sensor2;
 
             data3 = data.createNestedObject("data3");
-            data3["name"]       = "SEN0189";
+            data3["name"]       = "Turbidity Sensor";
             data3["adc-value"]  = adc_sensor3;
             data3["volt-value"] = volt_sensor3;
 
