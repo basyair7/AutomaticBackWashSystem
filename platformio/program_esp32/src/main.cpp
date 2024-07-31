@@ -14,7 +14,7 @@
 
 BootButton* bootBtn = new BootButton(BOOTBUTTON, INPUT);
 LEDBoard* ledBoard = new LEDBoard;
-ADSInit* ads = new ADSInit;
+ADSInit* adsInit = new ADSInit;
 SEN_0257* sensor1 = new SEN_0257;
 SEN_0257* sensor2 = new SEN_0257;
 SEN_0189* sensor3 = new SEN_0189;
@@ -31,7 +31,7 @@ class ProgramMain {
 public:
     void runSensor(void *pvParameter) {
         (void) pvParameter;
-        if (!ads->init()) {
+        if (!adsInit->init()) {
             TSprintln(F("Task runServer: not running"));
             vTaskDelete(taskSensor);
         }
@@ -84,13 +84,13 @@ public:
         programWiFi->initWiFi(WIFI_MODE_STATE);
         webServer->begin();
 
-        this->setupTestSendData(true);
+        // this->setupTestSendData(false);
 
         while (true) {
             bootBtn->WiFiMode();
             ledBoard->WiFiMode(WIFI_MODE_STATE, 1000, 250);
             webServer->updateOTAloop();
-            this->testSendData();
+            // this->testSendData();
 
             vTaskDelay(pdMS_TO_TICKS(100));
         }
