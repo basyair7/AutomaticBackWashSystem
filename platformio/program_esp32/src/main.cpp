@@ -180,6 +180,5 @@ public:
     }
 };
 
-ThisRTOS _main;
-void setup() { _main.setup(); }
-void loop() { _main.loop(); }
+void setup() { ThisRTOS::setup(); }
+void loop() { ThisRTOS::loop(); }
