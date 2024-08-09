@@ -18,6 +18,10 @@ String SPIFFSProgram::readconfig(String path) {
 }
 
 void SPIFFSProgram::writeconfig(String path, String valJson) {
+    if (SPIFFS.exists(path)) {
+        SPIFFS.remove(path);
+    }
+    
     file = SPIFFS.open(path, "w");
     if (file) {
         file.write((const uint8_t *)valJson.c_str(), valJson.length());
@@ -31,17 +35,9 @@ void SPIFFSProgram::writeconfig(String path, String valJson) {
 }
 
 bool SPIFFSProgram::removeFile(String path) {
-    bool state;
     if (!SPIFFS.exists(path)) {
-        state = false;
+        return false;
     }
 
-    if (SPIFFS.remove(path)) {
-        state = true;
-    }
-    else {
-        state = false;
-    }
-    
-    return state;
+    return SPIFFS.remove(path);
 }
