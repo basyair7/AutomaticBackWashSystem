@@ -1,5 +1,9 @@
-#ifndef ledboard_hpp
-#define ledboard_hpp
+/*! @file LedBoard.hpp
+ * @version 1.0.0
+*/
+
+#ifndef LEDBOARD_HPP
+#define LEDBOARD_HPP
 
 #include <Arduino.h>
 #include <variable.h>

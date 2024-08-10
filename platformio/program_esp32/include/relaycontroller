@@ -1,3 +1,7 @@
+/*! @file relaycontroller.hpp
+ * @version 1.0.0
+*/
+
 #ifndef RELAYCONTROLLER_HPP
 #define RELAYCONTROLLER_HPP
 

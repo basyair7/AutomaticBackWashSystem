@@ -1,3 +1,7 @@
+/*! @file WebServer.cpp
+ * @version 1.0.0
+*/
+
 #include <WebServer>
 #include <ElegantOTA.h>
 

@@ -1,3 +1,7 @@
+/*! @file spiffs.cpp
+ * @version 1.0.0
+*/
+
 #include <spiffs>
 
 String SSID_Client = SSID_DEFAULT;

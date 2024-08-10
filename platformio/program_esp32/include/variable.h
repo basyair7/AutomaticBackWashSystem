@@ -1,3 +1,8 @@
+/*! @file variable.h
+ * @version 1.0.0
+*/
+
+
 #ifndef VARIABLE_H
 #define VARIABLE_H
 

@@ -1,5 +1,9 @@
-#ifndef bootbutton_hpp
-#define bootbutton_hpp
+/*! @file BootButton.hpp
+ * @version 1.0.0
+*/
+
+#ifndef BOOTBUTTON_HPP
+#define BOOTBUTTON_HPP
 
 #include <Arduino.h>
 #include <pushbutton.h>

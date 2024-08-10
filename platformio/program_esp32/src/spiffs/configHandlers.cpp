@@ -1,3 +1,7 @@
+/*! @file configHandlers.cpp
+ * @version 1.0.0
+*/
+
 #include <spiffs>
 
 void SPIFFSProgram::updateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc)

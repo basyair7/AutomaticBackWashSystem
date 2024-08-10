@@ -1,3 +1,7 @@
+/*! @file main.cpp
+ * @version 1.0.0
+*/
+
 #include <main.h>
 #include <ADSConverter.h>
 #include <ArduinoJson.h>

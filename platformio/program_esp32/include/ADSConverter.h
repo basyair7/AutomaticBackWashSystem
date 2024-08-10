@@ -1,10 +1,15 @@
-#ifndef ADSConverter
-#define ADSConverter
+/*! @file ADSConverter.h
+ * @version 1.0.0
+*/
+
+#ifndef ADSConverter_H
+#define ADSConverter_H
 
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_ADS1X15.h>
+#include <TypeSerial>
 #include <variable.h>
 
 class ADSInit {

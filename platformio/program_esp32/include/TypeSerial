@@ -1,3 +1,7 @@
+/*! @file TypeSerial.hpp
+ * @version 1.0.0
+*/
+
 #ifndef TYPESERIAL_HPP
 #define TYPESERIAL_HPP
 

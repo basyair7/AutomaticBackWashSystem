@@ -1,3 +1,7 @@
+/*! @file wificonfig.cpp
+ * @version 1.0.0
+*/
+
 #include <WebServer>
 
 void WebServer::WiFiConfig_1(AsyncWebServerRequest *req) {

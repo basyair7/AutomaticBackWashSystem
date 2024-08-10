@@ -1,8 +1,12 @@
+/*! @file ADSConverter.cpp
+ * @version 1.0.0
+*/
+
 #include "ADSConverter.h"
 
 bool ADSInit::init() {
     if (!ads.begin()) {
-        Serial.println(F("Failed to initialize ADS.\n"));
+        TSprintln(F("Failed to initialize ADS.\n"));
         return false;
     }
 
@@ -18,10 +22,7 @@ void SEN_0189::run(uint8_t pin, long delayms, int* adc_ads, float* volt_ads) {
     if ((unsigned long) (millis() - LastDelay) >= (long unsigned int) delayms) {
         LastDelay = millis();
 
-        if (!ads.begin()) {
-            Serial.println(F("ADS not initialized.\n"));
-            return;
-        }
+        if (!this->init()) return;
         
         int _adc_ads = ADSInit::ads.readADC_SingleEnded(pin);
         float _volt = ADSInit::ads.computeVolts(_adc_ads);
@@ -35,10 +36,7 @@ void SEN_0257::run(uint8_t pin, long delayms, int* adc_ads, float* volt_ads) {
     if ((unsigned long) (millis() - LastDelay) >= (long unsigned int) delayms) {
         LastDelay = millis();
 
-        if (!ads.begin()) {
-            Serial.println(F("ADS not initialized.\n"));
-            return;
-        }
+        if (!this->init()) return;
 
         int _adc_ads = this->ads.readADC_SingleEnded(pin);
         float _volt = this->ads.computeVolts(_adc_ads);
