@@ -8,10 +8,20 @@
   #include <ESP8266HTTPUpdateServer.h>
   #include <ESP8266WebServer.h>
   #include <ESP8266mDNS.h>
-  #include <ElegantOTA.h>
+  using WiFiServer        = ESP8266WebServer;
+  using HTTPUpdateServer  = ESP8266HTTPUpdateServer;
+#elif defined(ESP32)
+  #include <WiFi.h>
+  #include <WebServer.h>
+  #include <HTTPUpdateServer.h>
+  #include <ESPmDNS.h>
+  using WiFiServer        = WebServer;
+  using HTTPUpdateServer  = HTTPUpdateServer;
 #else
     #error "Please select an ESP8266 board for this sketch."
 #endif
+
+#include <ElegantOTA.h>
 
 class ProgramMain {
 public:
@@ -20,7 +30,7 @@ public:
     Serial.begin(9600);
     if (mode_sta) {
       WiFi.mode(WIFI_STA);
-      WiFi.begin(ssid, password);
+      WiFi.begin(ssid.c_str(), password.c_str());
 
       // wait for connection
       Serial.println("Connecting WiFi.");
@@ -36,7 +46,7 @@ public:
     }
     else {
       WiFi.mode(WIFI_AP);
-      WiFi.softAP(apname, appassword);
+      WiFi.softAP(apname.c_str(), appassword.c_str());
       
       ipAddress = WiFi.softAPIP().toString().c_str();
       Serial.println();
@@ -71,8 +81,8 @@ public:
   }
 
 private:
-  ESP8266WebServer server;
-  ESP8266HTTPUpdateServer httpUpdater;
+  WiFiServer server;
+  HTTPUpdateServer httpUpdater;
   String ipAddress;
   const String apname = "nodemcuv2-ota";
   const String appassword = "admin1234";
