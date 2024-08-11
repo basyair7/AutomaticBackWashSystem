@@ -63,6 +63,7 @@
         "relaycontroller": "cpp",
         "bootbutton": "cpp",
         "LedBoard": "cpp",
-        "variable.h": "c"
+        "variable.h": "c",
+        "fs": "cpp"
     }
 }
