@@ -1,0 +1,68 @@
+/*! @file fs.hpp
+ * @version 1.0.0
+*/
+
+#ifndef FS_HPP
+#define FS_HPP
+
+#include <Arduino.h>
+// #include <SPIFFS.h>
+#include <LittleFS.h>
+#include <ArduinoJson.h>
+#include <vector>
+#include "variable.h"
+#include "TypeSerial"
+
+class FSProgram {
+public:
+    void setupFS();
+    void reinitializeConfig();
+    void reinitializeState();
+    void reinitializeVarRelay();
+
+public:
+    void changeVarRelay(String varName, String value);
+    void changePinRelay(String varName, uint8_t value);
+    void changeStateRelay(String varName, bool status);
+    void changeConfigWifi(String NEWSSID, String NEWPASSWORD);
+    void changeConfigAP(String NEWAPNAME, String NEWPASSWORD);
+    void changeConfigState(String stateConfig, bool value);
+    void parseVarRelay(const String& varName, int* id, int* pin, String* name, bool* status);
+
+private:
+    String readconfig(String path);
+    bool removeFile(String path);
+    void writeconfig(String path, String valJson);
+    void updateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
+    void updateState(const String& cfile, std::function<void (StaticJsonDocument<200>&)> updateFunc);
+    void updateRelay(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
+    void initializeOrUpdateConfig(const String& cfile, std::function<void (StaticJsonDocument<500>&)> updateFunc);
+    void initializeOrUpdateState(const String& cfile, std::function<void (StaticJsonDocument<200>&)> updateFunc);
+    void initializeOrUpdateVarRelay(const String& cfile, std::function<void(StaticJsonDocument<500>&)> updateFunc);
+    void initializeConfig();
+    void initializeState();
+    void initializeVarRelay();
+
+private:
+    std::vector<String> queryDirFS(const String path);
+    void TSprintlnList(const std::vector<String>& files) {
+        for (const auto& file : files) {
+            TSprintln(file);
+        }
+    }
+    void listFiles();
+
+private:
+    File file;
+    const String configFile = "/CONFIG/config.json";
+    const String configRelay = "/CONFIG/relaystate.json";
+    const String configFileState = "/CONFIG/~config.json";
+};
+
+extern bool WIFI_MODE_STATE, AUTO_CHANGE_MODE, REMOTE_SERVER_STATE;
+extern String SSID_Client;
+extern String PASSWORD_Client;
+extern String APNAME_Server;
+extern String APPASSWORD_Server;
+
+#endif
