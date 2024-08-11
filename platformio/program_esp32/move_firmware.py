@@ -1,13 +1,21 @@
 import os, json, shutil
 from SCons.Script import DefaultEnvironment
 
+# env::<board type?>
+# example : esp32doit-devkit-v1, nodemcuv2, uno
+board     = "esp32doit-devkit-v1"
+child     = "esp32doit-devkit-v1"
+firmware  = "firmware.bin" # or firmware.hex
+filesys   = "littlefs.bin" # or spiffs.bin
+extension = ".bin"
+
 class Move:
     def __init__(self) -> None:
-        self.build_dir = ".pio/build/esp32doit-devkit-v1"
-        self.output_firmware = "firmware.bin"
-        self.output_spiffs = "spiffs.bin"
+        self.build_dir = f".pio/build/{board}"
+        self.output_firmware = firmware
+        self.output_fs = filesys
         self.dest_path = "../../firmware"
-        self.child_dir = "esp32doit-devkit-v1"
+        self.child_dir = child
 
     def __move_file__(self, src: str, dest: str):
         try:
@@ -19,9 +27,9 @@ class Move:
         except Exception as e:
             print(f"Error moving file: {e}")
 
-    def process_file(self, new_firmware_name: str, new_spiffs_name: str=None):
+    def process_file(self, new_firmware_name: str, new_fs_name: str=None):
         firmware_src = os.path.join(self.build_dir, self.output_firmware)
-        spiffs_src= os.path.join(self.build_dir, self.output_spiffs)
+        fs_src= os.path.join(self.build_dir, self.output_fs)
         dest_dir = os.path.join(self.dest_path, self.child_dir)
 
         if not os.path.exists(dest_dir):
@@ -36,11 +44,11 @@ class Move:
         else:
             print(f"Firmware file not found: {firmware_src}")
 
-        if new_firmware_name and os.path.exists(spiffs_src):
-            spiffs_dest = os.path.join(dest_dir, new_spiffs_name)
-            self.__move_file__(spiffs_src, spiffs_dest)
-        elif new_spiffs_name:
-            print(f"SPIFFS file not found: {spiffs_src}")
+        if new_firmware_name and os.path.exists(fs_src):
+            fs_dest = os.path.join(dest_dir, new_fs_name)
+            self.__move_file__(fs_src, fs_dest)
+        elif new_fs_name:
+            print(f"FS file not found: {fs_src}")
 
 def main(source, target, env):
     # Open and read the configuration file
@@ -54,12 +62,12 @@ def main(source, target, env):
     typefile_2 = config["typefile-2"]
 
     out_file_firmware = f"{data_name}-v{data_version}-{data_revision}-{typefile_1}.bin"
-    out_file_spiffs = f"{data_name}-v{data_version}-{data_revision}-{typefile_2}.bin"
+    out_file_fs = f"{data_name}-v{data_version}-{data_revision}-{typefile_2}.bin"
 
     # Process files
     move_file = Move();
-    move_file.process_file(out_file_firmware, out_file_spiffs)
+    move_file.process_file(out_file_firmware, out_file_fs)
 
 env = DefaultEnvironment()
-env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", main)
-env.AddPostAction("$BUILD_DIR/spiffs.bin", main)
+env.AddPostAction("$BUILD_DIR/${PROGNAME}" + extension, main)
+env.AddPostAction(f"$BUILD_DIR/{filesys}", main)
