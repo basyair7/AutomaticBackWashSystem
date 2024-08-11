@@ -205,15 +205,26 @@ void FSProgram::reinitializeVarRelay() {
     });
 }
 
+void FSProgram::createDirectoryIfNeeded(const String& path) {
+    if (!LittleFS.exists(path)) {
+        if (LittleFS.mkdir(path)) {
+            Serial.println("Directory created");
+        } else {
+            Serial.println("Failed to create directory");
+        }
+    }
+}
+
 void FSProgram::setupFS() {
     while (true) {
-        if (!LittleFS.begin(true)) {
+        if (!LittleFS.begin()) {
             TSprintln(F("Failed..."));
             TSprintln(F("Error initializing LittleFS, please try again..."));
             TSprintln(F("Done: Error 0x1"));
             delay(150);
         }
         else {
+            this->createDirectoryIfNeeded("/CONFIG");
             this->initializeConfig();
             this->initializeState();
             this->initializeVarRelay();

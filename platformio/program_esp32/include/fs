@@ -50,6 +50,7 @@ private:
             TSprintln(file);
         }
     }
+    void createDirectoryIfNeeded(const String& path);
     void listFiles();
 
 private:
