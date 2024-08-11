@@ -81,14 +81,14 @@ void WebServer::begin() {
     
     // get css file and javascripts file
     // CSS
-    server.serveStatic("/css/recovery.css", SPIFFS, "/WEB/css/recovery.css");
-    server.serveStatic("/css/apconfig.css", SPIFFS, "/WEB/css/apconfig.css");
-    server.serveStatic("/css/wificonfig.css", SPIFFS, "/WEB/css/wificonfig.css");
+    server.serveStatic("/css/recovery.css", LittleFS, "/WEB/css/recovery.css");
+    server.serveStatic("/css/apconfig.css", LittleFS, "/WEB/css/apconfig.css");
+    server.serveStatic("/css/wificonfig.css", LittleFS, "/WEB/css/wificonfig.css");
     // JS
-    server.serveStatic("/js/reset-reboot.js", SPIFFS, "/WEB/js/reset-reboot.js");
-    server.serveStatic("/js/toggleCheck.js", SPIFFS, "/WEB/js/toggleCheck.js");
-    server.serveStatic("/js/clock.js", SPIFFS, "/WEB/js/clock.js");
-    server.serveStatic("/js/sweetalert.min.js", SPIFFS, "/WEB/js/sweetalert.min.js");
+    server.serveStatic("/js/reset-reboot.js", LittleFS, "/WEB/js/reset-reboot.js");
+    server.serveStatic("/js/toggleCheck.js", LittleFS, "/WEB/js/toggleCheck.js");
+    server.serveStatic("/js/clock.js", LittleFS, "/WEB/js/clock.js");
+    server.serveStatic("/js/sweetalert.min.js", LittleFS, "/WEB/js/sweetalert.min.js");
     
     // run server
     server.onNotFound(bind(&WebServer::handleNotFound, this, placeholders::_1));
