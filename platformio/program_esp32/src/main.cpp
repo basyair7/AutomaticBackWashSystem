@@ -36,7 +36,7 @@ public:
     void runSensor(void *pvParameter) {
         (void) pvParameter;
         if (!adsInit->init()) {
-            TSprintln(F("Task runServer: not running"));
+            TSprintln(F("Task runSensor: not running"));
             vTaskDelete(taskSensor);
         }
 
