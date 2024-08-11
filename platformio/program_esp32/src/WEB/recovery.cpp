@@ -5,7 +5,7 @@
 #include <WebServer>
 
 void WebServer::recovery(AsyncWebServerRequest *req) {
-    file = SPIFFS.open(webpath + "recovery.html", "r");
+    file = LittleFS.open(webpath + "recovery.html", "r");
     if (!file) {
         req->send_P(404, "text/plain", "File not found");
         return;

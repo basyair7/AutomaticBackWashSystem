@@ -1,11 +1,11 @@
-/*! @file apconfig.cpp
+/*! @file wificonfig.cpp
  * @version 1.0.0
 */
 
 #include <WebServer>
 
-void WebServer::APConfig_1(AsyncWebServerRequest *req) {
-    file = SPIFFS.open(webpath + "apconfig1.html", "r");
+void WebServer::WiFiConfig_1(AsyncWebServerRequest *req) {
+    file = LittleFS.open(webpath + "wificonfig1.html", "r");
     if (!file) {
         req->send_P(404, "text/plain", "File not found");
         return;
@@ -23,12 +23,12 @@ void WebServer::APConfig_1(AsyncWebServerRequest *req) {
     LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
-        "%VERSIONPROJECT%", "%VERSIONPROJECT%", "%APNAME%",
-        "%APPASSWORD%", "%APNAME%"
+        "%VERSIONPROJECT%", "%VERSIONPROJECT%",
+        "%APNAME%", "%APPASSWORD%", "%APNAME%"
     };
 
     const char* tags_html[] = {
-        version_project.c_str(), version_project.c_str(), 
+        version_project.c_str(), version_project.c_str(),
         APNAME_Server.c_str(), APPASSWORD_Server.c_str(),
         APNAME_Server.c_str()
     };
@@ -43,10 +43,10 @@ void WebServer::APConfig_1(AsyncWebServerRequest *req) {
     delete[] htmlBuffer;
 }
 
-void WebServer::APConfig_2(AsyncWebServerRequest *req) {
-    file = SPIFFS.open(webpath + "apconfig2.html", "r");
+void WebServer::WiFiConfig_2(AsyncWebServerRequest *req) {
+    file = LittleFS.open(webpath + "wificonfig2.html", "r");
     if (!file) {
-        req->send_P(404, "text/plain", "File not found");
+        req->send_P(200, "text/plain", "File not found");
         return;
     }
 
@@ -62,13 +62,13 @@ void WebServer::APConfig_2(AsyncWebServerRequest *req) {
     LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
-        "%VERSIONPROJECT%", "%VERSIONPROJECT%", "%APNAME%",
-        "%APPASSWORD%", "%LOCALIP%"
+        "%VERSIONPROJECT%", "%VERSIONPROJECT%", 
+        "%SSID%", "%PASSWORD%", "%LOCALIP%"
     };
 
     const char* tags_html[] = {
-        version_project.c_str(), version_project.c_str(),
-        APNAME_Server.c_str(), APPASSWORD_Server.c_str(),
+        version_project.c_str(), version_project.c_str(), 
+        SSID_Client.c_str(), PASSWORD_Client.c_str(),
         LOCALIP.c_str()
     };
 
@@ -78,13 +78,11 @@ void WebServer::APConfig_2(AsyncWebServerRequest *req) {
     }
 
     req->send_P(200, "text/html", page.c_str());
-
-    // don't forget to free the memory after use
     delete[] htmlBuffer;
 }
 
-void WebServer::SaveAPConfig(AsyncWebServerRequest *req) {
-    file = SPIFFS.open(webpath + "save-ap-config.html", "r");
+void WebServer::SaveWiFiConfig(AsyncWebServerRequest *req) {
+    file = LittleFS.open(webpath + "save-wifi-config.html", "r");
     if (!file) {
         req->send_P(404, "text/plain", "File not found");
         return;
@@ -97,11 +95,11 @@ void WebServer::SaveAPConfig(AsyncWebServerRequest *req) {
     htmlBuffer[fileSize] = '\0';
     file.close();
 
-    String NEWAPNAME, NEWAPPASSWORD;
-    if (req->hasArg("newap") && req->hasArg("newpassword")) {
-        NEWAPNAME     = req->arg("newap");
-        NEWAPPASSWORD = req->arg("newpassword");
-        spiffs.changeConfigAP(NEWAPNAME, NEWAPPASSWORD);
+    String NEWSSIDCLIENT, NEWPASSWORDCLIENT;
+    if (req->hasArg("newssid") && req->hasArg("newpassword")) {
+        NEWSSIDCLIENT     = req->arg("newssid");
+        NEWPASSWORDCLIENT = req->arg("newpassword");
+        fs.changeConfigWifi(NEWSSIDCLIENT, NEWPASSWORDCLIENT);
     }
 
     // get ip address
@@ -109,13 +107,15 @@ void WebServer::SaveAPConfig(AsyncWebServerRequest *req) {
     LOCALIP = clientIP.toString() + ":" + String(_port);
 
     const char* placeholders[] = {
-        "%VERSIONPROJECT%", "%NEWAPNAME%",
-        "%NEWAPPASSWORD%", "%LOCALIP%"
+        "%VERSIONPROJECT%",
+        "%NEWSSID%", "%NEWPASSWORD%",
+        "%LOCALIP%"
     };
 
     const char* tags_html[] = {
-        version_project.c_str(), NEWAPNAME.c_str(),
-        NEWAPPASSWORD.c_str(), LOCALIP.c_str()
+        version_project.c_str(),
+        NEWSSIDCLIENT.c_str(), NEWPASSWORDCLIENT.c_str(),
+        LOCALIP.c_str()
     };
 
     String page = htmlBuffer;
@@ -124,14 +124,13 @@ void WebServer::SaveAPConfig(AsyncWebServerRequest *req) {
     }
 
     req->send_P(200, "text/html", page.c_str());
-
     // don't forget to free the memory after use
     delete[] htmlBuffer;
 }
 
-void WebServer::APConfig(AsyncWebServerRequest *req) {
-    if (WiFi.getMode() != WIFI_AP)
-        this->APConfig_1(req);
+void WebServer::WiFiConfig(AsyncWebServerRequest *req) {
+    if (WiFi.getMode() != WIFI_AP) 
+        this->WiFiConfig_1(req);
     else
-        this->APConfig_2(req);
+        this->WiFiConfig_2(req);
 }

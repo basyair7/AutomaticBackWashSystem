@@ -5,7 +5,7 @@
 #include <WebServer>
 
 void WebServer::Reset_System(AsyncWebServerRequest *req) {
-    file = SPIFFS.open(webpath + "reset-system.html", "r");
+    file = LittleFS.open(webpath + "reset-system.html", "r");
     if (!file) {
         req->send_P(404, "text/plain", "File not found");
         return;
@@ -39,7 +39,7 @@ void WebServer::Reset_System(AsyncWebServerRequest *req) {
     delete[] htmlBuffer;
 
     // reinitialize config
-    spiffs.reinitializeConfig();
-    spiffs.reinitializeState();
-    // spiffs.reinitializeVarRelay();
+    fs.reinitializeConfig();
+    fs.reinitializeState();
+    // fs.reinitializeVarRelay();
 }
