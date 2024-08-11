@@ -11,7 +11,7 @@
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
 #include <ArduinoJson.h>
-#include "spiffs"
+#include "fs"
 #include "variable.h"
 #include "info"
 #include "TypeSerial"
@@ -56,7 +56,7 @@ private:
     String LOCALIP;
     File file;
     int _port;
-    SPIFFSProgram spiffs;
+    FSProgram fs;
 };
 
 #endif

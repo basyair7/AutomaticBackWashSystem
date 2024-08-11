@@ -7,7 +7,7 @@
 
 #include <Arduino.h>
 #include <pushbutton.h>
-#include "spiffs"
+#include "fs"
 #include "variable.h"
 
 class BootButton {
@@ -40,7 +40,7 @@ public:
     
 private:
     PushButtonDigital bootBtn;
-    SPIFFSProgram* fs_config = new SPIFFSProgram;
+    FSProgram* fs_config = new FSProgram;
     bool currentButtonState = false;
     bool lastButtonState    = false;
     bool buttonChange       = false;

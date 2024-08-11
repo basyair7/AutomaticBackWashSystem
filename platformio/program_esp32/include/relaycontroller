@@ -7,7 +7,7 @@
 
 #include <Arduino.h>
 #include <vector>
-#include "spiffs"
+#include "fs"
 #include "variable.h"
 
 #define RELAYON     LOW
@@ -21,7 +21,7 @@ public:
     String statusRelay;
 
 private:
-    SPIFFSProgram* fs_config = new SPIFFSProgram;
+    FSProgram* fs_config = new FSProgram;
 };
 
 #endif
