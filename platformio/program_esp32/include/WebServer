@@ -46,6 +46,8 @@ private:
 private:
     void postRelay(AsyncWebServerRequest *req, uint8_t *data, size_t len, size_t index, size_t total);
     void sendRelayStatus(AsyncWebServerRequest *req);
+    void sendRelayStatusWithFS(AsyncWebServerRequest *req);
+    void sendRelayStatusWithoutFS(AsyncWebServerRequest *req);
     void sendData(AsyncWebServerRequest *req);
 
 private:

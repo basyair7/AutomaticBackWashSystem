@@ -42,5 +42,6 @@ void WebServer::postRelay(AsyncWebServerRequest *req, uint8_t *data, size_t len,
 
 void WebServer::updateRelayState(int keys, bool state) {
     RelayController relayConfig;
-    relayConfig.write(relayKeys[keys], state, 1000);
+    // relayConfig.write(relayKeys[keys], state, 1000);
+    relayConfig.write_without_save(relayKeys[keys], state, 1000);
 }

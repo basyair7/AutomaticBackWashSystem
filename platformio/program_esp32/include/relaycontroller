@@ -17,6 +17,8 @@ class RelayController : protected VariableMillis {
 public:
     void begin(unsigned long _delay);
     void write(const String relay, const bool state, unsigned long _delay);
+    void write_without_save(const String relay, const bool state, unsigned long _delay);
+    String statusRelay;
 
 private:
     SPIFFSProgram* fs_config = new SPIFFSProgram;
