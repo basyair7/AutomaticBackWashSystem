@@ -56,7 +56,7 @@ private:
     String LOCALIP;
     File file;
     int _port;
-    FSProgram fs;
+    FSProgram fsprogram;
 };
 
 #endif
