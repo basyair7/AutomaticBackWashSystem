@@ -99,7 +99,7 @@ void WebServer::SaveWiFiConfig(AsyncWebServerRequest *req) {
     if (req->hasArg("newssid") && req->hasArg("newpassword")) {
         NEWSSIDCLIENT     = req->arg("newssid");
         NEWPASSWORDCLIENT = req->arg("newpassword");
-        fs.changeConfigWifi(NEWSSIDCLIENT, NEWPASSWORDCLIENT);
+        fsprogram.changeConfigWifi(NEWSSIDCLIENT, NEWPASSWORDCLIENT);
     }
 
     // get ip address

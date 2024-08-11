@@ -12,7 +12,7 @@ void WebServer::sendRelayStatusWithFS(AsyncWebServerRequest *req) {
     bool RelayState;
     
     for (const auto& i : relayKeys) {
-        fs.parseVarRelay(i, &IDRelay, &PINIORelay, &LableRelay, &RelayState);
+        fsprogram.parseVarRelay(i, &IDRelay, &PINIORelay, &LableRelay, &RelayState);
         if (PINIORelay == -1) {
             TSprintf("Failed to initialize relay %s\n", LableRelay.c_str());
             continue;
@@ -39,7 +39,7 @@ void WebServer::sendRelayStatusWithoutFS(AsyncWebServerRequest *req) {
     bool RelayState;
 
     for (const auto& i : relayKeys) {
-        fs.parseVarRelay(i, &IDRelay, &PINIORelay, &LableRelay, nullptr);
+        fsprogram.parseVarRelay(i, &IDRelay, &PINIORelay, &LableRelay, nullptr);
         if (PINIORelay == -1) {
             TSprintf("Failed to initialize relay %s\n", LableRelay.c_str());
             continue;

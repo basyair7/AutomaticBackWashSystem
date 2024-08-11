@@ -101,7 +101,7 @@ void WebServer::SaveAPConfig(AsyncWebServerRequest *req) {
     if (req->hasArg("newap") && req->hasArg("newpassword")) {
         NEWAPNAME     = req->arg("newap");
         NEWAPPASSWORD = req->arg("newpassword");
-        fs.changeConfigAP(NEWAPNAME, NEWAPPASSWORD);
+        fsprogram.changeConfigAP(NEWAPNAME, NEWAPPASSWORD);
     }
 
     // get ip address

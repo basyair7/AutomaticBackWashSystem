@@ -22,7 +22,7 @@ ADSInit* adsInit = new ADSInit;
 SEN_0257* sensor1 = new SEN_0257;
 SEN_0257* sensor2 = new SEN_0257;
 SEN_0189* sensor3 = new SEN_0189;
-FSProgram* fs = new FSProgram;
+FSProgram* fsprogram = new FSProgram;
 RelayController* relaycontrol = new RelayController;
 ProgramWiFi* programWiFi = new ProgramWiFi;
 WebServer* webServer = new WebServer(3000);
@@ -163,7 +163,7 @@ public:
 
         TSbegin(115200);
         TSprintln(F("\nInitializing..."));
-        fs->setupFS();
+        fsprogram->setupFS();
         bootBtn->begin();
         ledBoard->begin(LED_BUILTIN);
         relaycontrol->begin(1000);

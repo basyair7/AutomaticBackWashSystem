@@ -39,7 +39,7 @@ void WebServer::Reset_System(AsyncWebServerRequest *req) {
     delete[] htmlBuffer;
 
     // reinitialize config
-    fs.reinitializeConfig();
-    fs.reinitializeState();
-    // fs.reinitializeVarRelay();
+    fsprogram.reinitializeConfig();
+    fsprogram.reinitializeState();
+    // fsprogram.reinitializeVarRelay();
 }
