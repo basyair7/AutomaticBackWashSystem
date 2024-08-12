@@ -217,7 +217,7 @@ void FSProgram::createDirectoryIfNeeded(const String& path) {
 
 void FSProgram::setupFS() {
     while (true) {
-        if (!LittleFS.begin()) {
+        if (!LittleFS.begin(true)) {
             TSprintln(F("Failed..."));
             TSprintln(F("Error initializing LittleFS, please try again..."));
             TSprintln(F("Done: Error 0x1"));
