@@ -16,7 +16,12 @@ void FSProgram::updateRelay(const String& cfile, std::function<void (StaticJsonD
             relay["id"] = id;
             relay["pin"] = PIN_IO_RELAY[i];
             relay["name"] = VALUE_DEFAULT[i];
-            relay["status"] = false; // Default status to false
+            if (id == 1 || id == 2) {
+                relay["status"] = true; // Default status to true (for id 1 and 2)
+            }
+            else {
+                relay["status"] = false; // Default status to false (for id 3 and 4)
+            }
 
             id++;
         }
@@ -72,7 +77,12 @@ void FSProgram::parseVarRelay(const String& varName, int* id, int* pin, String* 
             relay["id"] = id;
             relay["pin"] = PIN_IO_RELAY[i];
             relay["name"] = VALUE_DEFAULT[i];
-            relay["status"] = false; // Default status to false
+            if (id == 1 || id == 2) {
+                relay["status"] = true; // Default status to true (for id 1 and 2)
+            }
+            else {
+                relay["status"] = false; // Default status to false (for id 3 and 4)
+            }
 
             id++;
         }

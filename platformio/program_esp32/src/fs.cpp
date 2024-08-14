@@ -93,7 +93,12 @@ void FSProgram::initializeOrUpdateVarRelay(const String& cfile, std::function<vo
             relay["id"] = id;
             relay["name"] = VALUE_DEFAULT[i];
             relay["pin"] = PIN_IO_RELAY[i];
-            relay["status"] = false;
+            if (id == 1 || id == 2) {
+                relay["status"] = true; // Default status to true (for id 1 and 2)
+            }
+            else {
+                relay["status"] = false; // Default status to false (for id 3 and 4)
+            }
 
             id++;
         }
